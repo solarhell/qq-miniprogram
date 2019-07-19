@@ -1,3 +1,3 @@
-module github.com/solarhell/qq-miniprogram
+module github.com/solarhell/swan-miniprogram
 
 go 1.12

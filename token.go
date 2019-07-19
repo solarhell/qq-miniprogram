@@ -1,12 +1,12 @@
-package qq_miniprogram
+package swan_miniprogram
 
 import (
 	"encoding/json"
 	"errors"
 )
 
-func (c *Client) GetAccessToken(appId, appSecret string) (ak AccessToken, err error) {
-	api, err := TokenURL(appId, appSecret)
+func (c *Client) GetAccessToken(appKey, appSecret string) (ak AccessToken, err error) {
+	api, err := TokenURL(appKey, appSecret)
 	if err != nil {
 		return ak, err
 	}
@@ -19,7 +19,7 @@ func (c *Client) GetAccessToken(appId, appSecret string) (ak AccessToken, err er
 	defer res.Body.Close()
 
 	if res.StatusCode != 200 {
-		return ak, ErrConnectTencentServer
+		return ak, ErrConnectBaiduServer
 	}
 
 	err = json.NewDecoder(res.Body).Decode(&ak)

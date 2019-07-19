@@ -1,17 +1,16 @@
-package qq_miniprogram
+package swan_miniprogram
 
 import "net/url"
 
 const (
 	// BaseURL 基础URL
-	baseURL           = "https://api.q.qq.com"
-	codeAPI           = "/sns/jscode2session"
-	tokenAPI          = "/api/getToken"
-	sendCustomMessage = "/api/json/template/send"
+	baseURL  = "https://spapi.baidu.com"
+	codeAPI  = "/oauth/jscode2sessionkey"
+	tokenAPI = "https://openapi.baidu.com/oauth/2.0/token"
 )
 
-func CodeToURL(appId, appSecret, code string) (s string, err error) {
-	if appId == "" || appSecret == "" || code == "" {
+func CodeToURL(appKey, appSecret, code string) (s string, err error) {
+	if appKey == "" || appSecret == "" || code == "" {
 		return s, ErrNotAllowEmptyParam
 	}
 	u, err := url.Parse(baseURL + codeAPI)
@@ -21,48 +20,30 @@ func CodeToURL(appId, appSecret, code string) (s string, err error) {
 
 	query := u.Query()
 
-	query.Set("appid", appId)
-	query.Set("secret", appSecret)
-	query.Set("js_code", code)
-	query.Set("grant_type", "authorization_code")
+	query.Set("client_id", appKey)
+	query.Set("sk", appSecret)
+	query.Set("code", code)
 
 	u.RawQuery = query.Encode()
 
 	return u.String(), nil
 }
 
-func TokenURL(appId, appSecret string) (s string, err error) {
-	if appId == "" || appSecret == "" {
+func TokenURL(appKey, appSecret string) (s string, err error) {
+	if appKey == "" || appSecret == "" {
 		return s, ErrNotAllowEmptyParam
 	}
-	u, err := url.Parse(baseURL + tokenAPI)
+	u, err := url.Parse(tokenAPI)
 	if err != nil {
 		return s, err
 	}
 
 	query := u.Query()
 
-	query.Set("appid", appId)
-	query.Set("secret", appSecret)
+	query.Set("client_id", appKey)
+	query.Set("client_secret", appSecret)
+	query.Set("scope", "smartapp_snsapi_base")
 	query.Set("grant_type", "client_credential")
-
-	u.RawQuery = query.Encode()
-
-	return u.String(), nil
-}
-
-func SendCustomMessageURL(accessToken string) (s string, err error) {
-	if accessToken == "" {
-		return s, ErrNotAllowEmptyParam
-	}
-	u, err := url.Parse(baseURL + sendCustomMessage)
-	if err != nil {
-		return s, err
-	}
-
-	query := u.Query()
-
-	query.Set("access_token", accessToken)
 
 	u.RawQuery = query.Encode()
 

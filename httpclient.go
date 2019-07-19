@@ -1,4 +1,4 @@
-package qq_miniprogram
+package swan_miniprogram
 
 import (
 	"fmt"
