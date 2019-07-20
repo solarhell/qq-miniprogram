@@ -19,25 +19,10 @@ package main
 
 import (
 	QM "github.com/solarhell/qq-miniprogram"
-	"net/http"
-	"time"
 )
 
 func main() {
-	c := QM.NewClient(&http.Client{
-		Timeout: 30 * time.Second,
-		Transport: &QM.DebugRequestTransport{
-			RequestHeader:  true,
-			RequestBody:    true,
-			ResponseHeader: true,
-			ResponseBody:   true,
-			Transport: &http.Transport{
-				IdleConnTimeout: 30 * time.Second,
-	        },
-		},
-	})
-
-	ui, err := c.Login("appid", "secret", "code")
+	ui, err := QM.Login("appid", "secret", "code")
 	...
 }
 ```

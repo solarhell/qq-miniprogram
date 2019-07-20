@@ -4,28 +4,25 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
-	"log"
-	"strings"
+	"github.com/imroc/req"
 )
 
-func (c *Client) Login(appId, appSecret, code string) (lr LoginResponse, err error) {
+func Login(appId, appSecret, code string) (lr LoginResponse, err error) {
 	api, err := CodeToURL(appId, appSecret, code)
 	if err != nil {
 		return lr, err
 	}
 
-	res, err := c.client.Get(api)
-
+	r, err := req.Get(api)
 	if err != nil {
 		return lr, err
 	}
-	defer res.Body.Close()
 
-	if res.StatusCode != 200 {
+	if r.Response().StatusCode != 200 {
 		return lr, ErrConnectTencentServer
 	}
 
-	err = json.NewDecoder(res.Body).Decode(&lr)
+	err = r.ToJSON(&lr)
 	if err != nil {
 		return lr, err
 	}
@@ -37,7 +34,7 @@ func (c *Client) Login(appId, appSecret, code string) (lr LoginResponse, err err
 	return lr, nil
 }
 
-func (c *Client) SendCustomMessage(accessToken string, toUser string, templateId string, page string, formId string, keywords []string, emphasisWordIndex int) (cr CommonResponse, err error) {
+func SendCustomMessage(accessToken string, toUser string, templateId string, page string, formId string, keywords []string, emphasisWordIndex int) (cr CommonResponse, err error) {
 	api, err := SendCustomMessageURL(accessToken)
 	if err != nil {
 		return cr, err
@@ -54,20 +51,16 @@ func (c *Client) SendCustomMessage(accessToken string, toUser string, templateId
 		return cr, err
 	}
 
-	log.Println(bf.String())
-
-	res, err := c.client.Post(api, "application/json", strings.NewReader(bf.String()))
-
+	r, err := req.Post(api, req.BodyJSON(bf.String()))
 	if err != nil {
 		return cr, err
 	}
-	defer res.Body.Close()
 
-	if res.StatusCode != 200 {
+	if r.Response().StatusCode != 200 {
 		return cr, ErrConnectTencentServer
 	}
 
-	err = json.NewDecoder(res.Body).Decode(&cr)
+	err = r.ToJSON(&cr)
 	if err != nil {
 		return cr, err
 	}
