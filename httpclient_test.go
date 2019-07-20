@@ -1,4 +1,4 @@
-package swan_miniprogram
+package qq_miniprogram
 
 import (
 	"bytes"

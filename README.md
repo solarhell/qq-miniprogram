@@ -1,11 +1,12 @@
-# swan-miniprogram
+# qq-miniprogram
 [![Build Status](https://travis-ci.org/solarhell/mina.svg?branch=master)](https://travis-ci.org/solarhell/mina)
-百度智能小程序 golang sdk
+QQ小程序 golang sdk
 
 
 ## done
 登录
 AccessToken(需持久化 防止超过请求限制)
+发送模板消息
 
 ## todo
 
@@ -17,15 +18,15 @@ AccessToken(需持久化 防止超过请求限制)
 package main
 
 import (
-	swan "github.com/solarhell/swan-miniprogram"
+	QM "github.com/solarhell/qq-miniprogram"
 	"net/http"
 	"time"
 )
 
 func main() {
-	c := swan.NewClient(&http.Client{
+	c := QM.NewClient(&http.Client{
 		Timeout: 30 * time.Second,
-		Transport: &swan.DebugRequestTransport{
+		Transport: &QM.DebugRequestTransport{
 			RequestHeader:  true,
 			RequestBody:    true,
 			ResponseHeader: true,
@@ -36,7 +37,7 @@ func main() {
 		},
 	})
 
-	ui, err := c.Login("appKey", "appSecret", "code")
+	ui, err := c.Login("appid", "secret", "code")
 	...
 }
 ```
