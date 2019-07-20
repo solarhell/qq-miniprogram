@@ -4,5 +4,5 @@ import "errors"
 
 var (
 	ErrNotAllowEmptyParam   = errors.New("param cannot be empty")
-	ErrConnectTencentServer = errors.New("err connecet Tencent server")
+	ErrConnectTencentServer = errors.New("err connect Tencent server")
 )
